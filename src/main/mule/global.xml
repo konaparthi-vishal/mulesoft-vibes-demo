@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+    
+    <!-- Configuration Properties -->
+    <configuration-properties file="config.properties" doc:name="Configuration properties"/>
+    
+    <!-- HTTP Listener Configuration -->
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="http-listener-config">
+        <http:listener-connection host="${http.host}" port="${http.port}"/>
+    </http:listener-config>
+    
+    <!-- Object Store Configuration -->
+    <os:config name="ObjectStore_Config" doc:name="ObjectStore Config" doc:id="ad521057-67a2-4f96-a345-8c8dd602ccc1" />
+    
+    <!-- Object Store Configurations -->
+    <os:object-store name="Product_ObjectStore" doc:name="Product Object Store" doc:id="product-object-store"
+                     maxEntries="1000" 
+                     expirationInterval="0" 
+                     config-ref="ObjectStore_Config"/>
+    
+    <os:object-store name="Order_ObjectStore" doc:name="Order Object Store" doc:id="order-object-store"
+                     maxEntries="1000" 
+                     expirationInterval="0" 
+                     config-ref="ObjectStore_Config"/>
+    
+
+</mule>
