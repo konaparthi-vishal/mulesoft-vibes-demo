@@ -1,0 +1,198 @@
+#%RAML 1.0
+title: Product API
+version: v1
+baseUri: http://localhost:8081/api
+mediaType: application/json
+
+types:
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the product
+        example: "prod-12345"
+      name:
+        type: string
+        description: Product name
+        example: "Laptop Computer"
+        required: true
+      price:
+        type: number
+        description: Product price
+        example: 999.99
+        required: true
+  
+  ProductRequest:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Product name
+        example: "Laptop Computer"
+        required: true
+      price:
+        type: number
+        description: Product price
+        example: 999.99
+        required: true
+
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Error message
+        example: "Product not found"
+      code:
+        type: string
+        description: Error code
+        example: "PRODUCT_NOT_FOUND"
+
+/products:
+  displayName: Products
+  description: Operations on products
+  
+  get:
+    displayName: Get All Products
+    description: Retrieve all products
+    responses:
+      200:
+        body:
+          application/json:
+            type: Product[]
+            example: |
+              [
+                {
+                  "id": "prod-1",
+                  "name": "Laptop",
+                  "price": 999.99
+                },
+                {
+                  "id": "prod-2",
+                  "name": "Mouse",
+                  "price": 29.99
+                }
+              ]
+      500:
+        body:
+          application/json:
+            type: Error
+            example: |
+              {
+                "message": "Internal server error",
+                "code": "INTERNAL_ERROR"
+              }
+  
+  post:
+    displayName: Create Product
+    description: Create a new product
+    body:
+      application/json:
+        type: ProductRequest
+        example: |
+          {
+            "name": "Keyboard",
+            "price": 79.99
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            type: Product
+            example: |
+              {
+                "id": "prod-3",
+                "name": "Keyboard", 
+                "price": 79.99
+              }
+      400:
+        body:
+          application/json:
+            type: Error
+            example: |
+              {
+                "message": "Invalid product data",
+                "code": "INVALID_REQUEST"
+              }
+      500:
+        body:
+          application/json:
+            type: Error
+
+  /{id}:
+    displayName: Product by ID
+    description: Operations on a specific product
+    
+    get:
+      displayName: Get Product by ID
+      description: Retrieve a specific product by ID
+      responses:
+        200:
+          body:
+            application/json:
+              type: Product
+              example: |
+                {
+                  "id": "prod-1",
+                  "name": "Laptop",
+                  "price": 999.99
+                }
+        404:
+          body:
+            application/json:
+              type: Error
+              example: |
+                {
+                  "message": "Product not found",
+                  "code": "PRODUCT_NOT_FOUND"
+                }
+        500:
+          body:
+            application/json:
+              type: Error
+    
+    put:
+      displayName: Update Product
+      description: Update an existing product
+      body:
+        application/json:
+          type: ProductRequest
+          example: |
+            {
+              "name": "Gaming Laptop",
+              "price": 1299.99
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              type: Product
+              example: |
+                {
+                  "id": "prod-1",
+                  "name": "Gaming Laptop",
+                  "price": 1299.99
+                }
+        400:
+          body:
+            application/json:
+              type: Error
+              example: |
+                {
+                  "message": "Invalid product data",
+                  "code": "INVALID_REQUEST"
+                }
+        404:
+          body:
+            application/json:
+              type: Error
+              example: |
+                {
+                  "message": "Product not found",
+                  "code": "PRODUCT_NOT_FOUND"
+                }
+        500:
+          body:
+            application/json:
+              type: Error
